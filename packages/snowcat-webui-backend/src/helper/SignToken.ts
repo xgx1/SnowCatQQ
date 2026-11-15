@@ -82,7 +82,9 @@ export class AuthHelper {
     const createdTimeSeconds = Math.floor(Number(credentialJson.Data.CreatedTime));
     const timeDifferenceSeconds = currentTimeSeconds - createdTimeSeconds;
     const isWithinOneHour = timeDifferenceSeconds >= 0 && timeDifferenceSeconds <= AuthHelper.MAX_CREDENTIAL_VALID_SECONDS;
-    return isWithinOneHour && safeEqual(credentialJson.Data.HashEncoded, AuthHelper.generatePasswordHash(token));
+    // 每次调用都会换新盐，拿 generatePasswordHash 的输出做等值比较必然失败（登录签的是客户端提交的 hash）。
+    // 改按 hash 是否对应 token 来校验，legacy sha256 与 scrypt 两种格式都由 comparePasswordHash 处理。
+    return isWithinOneHour && AuthHelper.comparePasswordHash(token, credentialJson.Data.HashEncoded);
   }
 
   /**
