@@ -16,6 +16,8 @@ const OFFICIAL_PLUGIN_IDS = new Set<string>([
   'snowcat-plugin-cleaner',
   'snowcat-plugin-ssqq',
   'snowcat-plugin-qce',
+  // 我们的私有桥接插件沿用 NapCat 时代的 id：路径 /plugin/napcat-plugin-qce/api/* 被 19 个脚本硬编码
+  'napcat-plugin-qce',
 ]);
 
 /**
